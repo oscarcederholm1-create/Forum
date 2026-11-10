@@ -1,5 +1,3 @@
--- One-time repair for the existing forum database, where IDs were all zero.
--- The two legacy replies are assigned to the "hej123" topic.
 UPDATE users
 SET id = 1
 WHERE id = 0 AND username = 'sleep';
