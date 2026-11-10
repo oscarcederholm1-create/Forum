@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 $stmt = $pdo->prepare("
     SELECT posts.*, users.username
     FROM posts
-    JOIN users ON posts.user_id = users.id
+    LEFT JOIN users ON posts.user_id = users.id
     WHERE posts.topic_id = ?
     ORDER BY posts.created_at ASC
 ");
@@ -85,7 +85,7 @@ $posts = $stmt->fetchAll();
 
         <p>
             <strong>
-                <?= htmlspecialchars($post["username"]) ?>
+                <?= htmlspecialchars($post["username"] ?? "Former user") ?>
             </strong>
         </p>
 
