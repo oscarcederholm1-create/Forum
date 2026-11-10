@@ -67,7 +67,7 @@ $posts = $stmt->fetchAll();
 
 ?>
 
-<a href="index.php">Return to post</a>
+<a href="index.php">Return to forum</a>
 
 <h1><?= htmlspecialchars($topic["title"]) ?></h1>
 
