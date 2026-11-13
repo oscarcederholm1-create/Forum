@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ?>
 
-<h1>Registrera konto</h1>
+<h1>Register Your Account</h1>
 
 <form method="POST">
     <input type="text" name="username"

@@ -43,8 +43,8 @@ $topics = $stmt->fetchAll();
 
 <?php else: ?>
 
-    <a href="login.php">Login</a>
-    <a href="register.php">Register Account</a>
+    <a href="login.php">||Login|[----------]| </a>
+    <a href="register.php">Register Account||</a>
 
 <?php endif; ?>
 
