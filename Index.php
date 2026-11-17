@@ -11,9 +11,10 @@ $stmt = $pdo->query("
         users.username,
         (
             SELECT COUNT(*)
-            FROM posts
+            FROM post_likes
+            JOIN posts ON post_likes.post_id = posts.id
             WHERE posts.topic_id = topics.id
-        ) AS post_count
+        ) AS like_count
 
     FROM topics
 
@@ -67,7 +68,7 @@ $topics = $stmt->fetchAll();
         </p>
 
         <p>
-            Total Posts: <?= $topic["post_count"] ?>
+            Total Likes: <?= (int)$topic["like_count"] ?>
         </p>
 
         <p>

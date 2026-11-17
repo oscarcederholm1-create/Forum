@@ -26,10 +26,45 @@ if (!$topic) {
 }
 
 
-// Hantera nya svar
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     require_login();
+
+    if (($_POST["action"] ?? "") === "like") {
+
+    $post_id = (int)($_POST["post_id"] ?? 0);
+
+    $stmt = $pdo->prepare(
+        "SELECT id FROM posts WHERE id = ? AND topic_id = ?"
+    );
+    $stmt->execute([$post_id, $topic_id]);
+
+    if ($stmt->fetch()) {
+
+        $stmt = $pdo->prepare(
+            "SELECT 1 FROM post_likes
+             WHERE post_id = ? AND user_id = ?"
+        );
+        $stmt->execute([$post_id, $_SESSION["user_id"]]);
+
+        if ($stmt->fetch()) {
+            $stmt = $pdo->prepare(
+                "DELETE FROM post_likes
+                 WHERE post_id = ? AND user_id = ?"
+            );
+        } else {
+            $stmt = $pdo->prepare(
+                "INSERT INTO post_likes (post_id, user_id)
+                 VALUES (?, ?)"
+            );
+        }
+
+        $stmt->execute([$post_id, $_SESSION["user_id"]]);
+    }
+
+    header("Location: topic.php?id=" . $topic_id);
+    exit;
+    }
 
     $content = trim($_POST["content"] ?? "");
 
@@ -46,7 +81,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $content
         ]);
 
-        // Ladda om sidan efter att svaret sparats
         header("Location: topic.php?id=" . $topic_id);
         exit;
     }
@@ -54,10 +88,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 
 $stmt = $pdo->prepare("
-    SELECT posts.*, users.username
+    SELECT posts.*, users.username,
+        (
+            SELECT COUNT(*)
+            FROM post_likes
+            WHERE post_likes.post_id = posts.id
+        ) AS like_count
+
     FROM posts
+
     LEFT JOIN users ON posts.user_id = users.id
+
     WHERE posts.topic_id = ?
+
     ORDER BY posts.created_at ASC
 ");
 
@@ -97,6 +140,23 @@ $posts = $stmt->fetchAll();
             <?= htmlspecialchars($post["created_at"]) ?>
         </small>
 
+        <p>
+            <?= (int)$post["like_count"] ?> likes
+        </p>
+
+        <?php if (isset($_SESSION["user_id"])): ?>
+
+            <form method="POST">
+                <input type="hidden" name="action" value="like">
+
+                <input type="hidden"
+                    name="post_id"
+                    value="<?= (int)$post["id"] ?>">
+
+                <button type="submit">Like / Unlike</button>
+            </form>
+
+        <?php endif; ?>
     </div>
 
 <?php endforeach; ?>
