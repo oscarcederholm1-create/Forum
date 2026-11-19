@@ -112,7 +112,7 @@ $posts = $stmt->fetchAll();
 
 <a href="index.php">Return to forum</a>
 
-<h1><?= htmlspecialchars($topic["title"]) ?></h1>
+<h1><?= htmlspecialchars($topic["title"], ENT_QUOTES, 'UTF-8') ?></h1>
 
 <p>
     Posted by:
