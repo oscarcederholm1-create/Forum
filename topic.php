@@ -110,79 +110,138 @@ $posts = $stmt->fetchAll();
 
 ?>
 
-<a href="index.php">Return to forum</a>
+<!DOCTYPE html>
+<html lang="en">
 
-<h1><?= htmlspecialchars($topic["title"], ENT_QUOTES, 'UTF-8') ?></h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<p>
-    Posted by:
-    <?= htmlspecialchars($post["username"], ENT_QUOTES, 'UTF-8') ?>
-</p>
+    <title>
+        <?= htmlspecialchars($topic["title"], ENT_QUOTES, 'UTF-8') ?>
+    </title>
 
+    <link rel="stylesheet" href="css/style.css">
+</head>
 
-<h2>Posts</h2>
+<body>
 
-<?php foreach ($posts as $post): ?>
+<div class="page-container">
 
-    <div class="post">
+    <a href="index.php" class="back-link">
+        Return to forum
+    </a>
+<h1>
+        <?= htmlspecialchars($topic["title"], ENT_QUOTES, 'UTF-8') ?>
+    </h1>
 
-        <p>
-            <strong>
-                <?= htmlspecialchars($post["username"] ?? "Former user", ENT_QUOTES, 'UTF-8') ?>
-            </strong>
-        </p>
-
-        <p>
-            <?= nl2br(htmlspecialchars($post["content"], ENT_QUOTES, 'UTF-8')) ?>
-        </p>
-
-        <small>
-            <?= htmlspecialchars($post["created_at"], ENT_QUOTES, 'UTF-8') ?>
-        </small>
-
-        <p>
-            <?= (int)$post["like_count"] ?> likes
-        </p>
-
-        <?php if (isset($_SESSION["user_id"])): ?>
-
-            <form method="POST">
-                <input type="hidden" name="action" value="like">
-
-                <input type="hidden"
-                    name="post_id"
-                    value="<?= (int)$post["id"] ?>">
-
-                <button type="submit">Like / Unlike</button>
-            </form>
-
-        <?php endif; ?>
-    </div>
-
-<?php endforeach; ?>
-
-
-<?php if (isset($_SESSION["user_id"])): ?>
-
-    <h2>Write an answer</h2>
-
-    <form method="POST">
-
-        <textarea name="content"
-                  placeholder="Send your answer..."
-                  minlength="2"
-                  maxlength="50"
-                  required></textarea>
-
-        <button type="submit">Send reply</button>
-
-    </form>
-
-<?php else: ?>
-
-    <p>
-        <a href="login.php">Login</a>
-        You need to log in to send a message.
+    <p class="topic-info">
+        Started by:
+        <?= htmlspecialchars($topic["username"], ENT_QUOTES, 'UTF-8') ?>
     </p>
 
-<?php endif; ?>
+
+    <h2 class="section-title">Posts</h2>
+
+
+    <?php foreach ($posts as $post): ?>
+
+        <div class="post">
+
+            <p>
+                <strong>
+                    <?= htmlspecialchars(
+                        $post["username"] ?? "Former user",
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ) ?>
+                </strong>
+            </p>
+
+            <p>
+                <?= nl2br(
+                    htmlspecialchars($post["content"], ENT_QUOTES, 'UTF-8')
+                ) ?>
+            </p>
+
+            <small>
+                <?= htmlspecialchars($post["created_at"], ENT_QUOTES, 'UTF-8') ?>
+            </small>
+
+            <p>
+                <?= (int)$post["like_count"] ?> likes
+            </p>
+
+
+            <?php if (isset($_SESSION["user_id"])): ?>
+
+                <form method="POST" class="post-actions">
+
+                    <input
+                        type="hidden"
+                        name="action"
+                        value="like"
+                    >
+
+                    <input
+                        type="hidden"
+                        name="post_id"
+                        value="<?= (int)$post["id"] ?>"
+                    >
+
+                    <button type="submit">
+                        Like / Unlike
+                    </button>
+
+                </form>
+
+            <?php endif; ?>
+
+        </div>
+
+    <?php endforeach; ?>
+
+
+    <?php if (isset($_SESSION["user_id"])): ?>
+
+        <div class="form-card">
+
+            <h2>Write an reply</h2>
+
+            <form method="POST">
+
+                <textarea
+                    name="content"
+                    placeholder="Send your reply..."
+                    minlength="2"
+                    maxlength="50"
+                    required
+                ></textarea>
+
+                <button type="submit">
+                    Send reply
+                </button>
+
+            </form>
+
+        </div>
+
+    <?php else: ?>
+
+        <div class="form-card">
+
+            <p>
+                <a href="login.php">
+                    Login
+                </a>
+                You need to log in to send a message
+            </p>
+
+        </div>
+
+    <?php endif; ?>
+
+</div>
+
+</body>
+</html>

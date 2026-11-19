@@ -33,17 +33,68 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 ?>
+<!DOCTYPE html>
+<html lang="en">
 
-<h1>Log in to your account</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<form method="POST">
-    <input type="text" name="username"
-           placeholder="username" required>
+    <title>Login - My Forum</title>
 
-    <input type="password" name="password"
-           placeholder="Password" required>
+    <link rel="stylesheet" href="css/style.css">
+</head>
 
-    <button type="submit">Login</button>
-</form>
+<body>
 
-<p><?= htmlspecialchars($error) ?></p>
+<div class="page-container">
+
+    <a href="index.php" class="back-link">
+        Return to forum
+    </a>
+
+    <div class="form-card">
+
+        <h1>Log in to your account</h1>
+
+        <form method="POST">
+
+            <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                required
+            >
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                required
+            >
+
+            <button type="submit">
+                Login
+            </button>
+
+        </form>
+
+        <?php if ($error !== ""): ?>
+
+            <p class="error-message">
+                <?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>
+            </p>
+
+        <?php endif; ?>
+
+        <p>
+            Don't have an account?
+            <a href="register.php">Register</a>
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+</html>

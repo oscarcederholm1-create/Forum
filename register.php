@@ -37,22 +37,73 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 ?>
+<!DOCTYPE html>
+<html lang="en">
 
-<h1>Register Your Account</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<form method="POST">
-    <input type="text" 
-        name="username"
-        minlength="3"
-        maxlength="20"
-        pattern="[A-Za-z0-9_åäöÅÄÖ-]+"
-        title="3-20 characters. Letters, numbers, underscores and hyphens only."
-           placeholder="Username" required>
+    <title>Register - My Forum</title>
 
-    <input type="password" name="password"
-           placeholder="Password" required>
+    <link rel="stylesheet" href="css/style.css">
+</head>
 
-    <button type="submit">Register</button>
-</form>
+<body>
 
-<p><?= htmlspecialchars($error) ?></p>
+<div class="page-container">
+
+    <a href="index.php" class="back-link">
+        Return to forum
+    </a>
+
+    <div class="form-card">
+
+        <h1>Register Your Account</h1>
+
+        <form method="POST">
+
+            <input
+                type="text"
+                name="username"
+                minlength="3"
+                maxlength="20"
+                pattern="[A-Za-z0-9_åäöÅÄÖ-]+"
+                title="3-20 characters. Letters, numbers, underscores and hyphens only."
+                placeholder="Username"
+                required
+            >
+
+            <input
+                type="password"
+                name="password"
+                minlength="8"
+                placeholder="Password (at least 8 characters)"
+                required
+            >
+
+            <button type="submit">
+                Register
+            </button>
+
+        </form>
+
+        <?php if ($error !== ""): ?>
+
+            <p class="error-message">
+                <?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>
+            </p>
+
+        <?php endif; ?>
+
+        <p>
+            Already have an account?
+            <a href="login.php">Login</a>
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+</html>

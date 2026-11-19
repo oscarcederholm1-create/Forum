@@ -50,27 +50,70 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             exit;
 
         } catch (PDOException $e) {
-
+            if ($pdo->inTransaction()) {
             $pdo->rollBack();
+            }
             $error = "Couldn't create discussion.";
         }
     }
 }
 ?>
+<!DOCTYPE html>
+<html lang="en">
 
-<h1>Skapa ny diskussion</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<form method="POST">
+    <title>Create Discussion - My Forum</title>
 
-    <input type="text" name="title"
-           placeholder="Enter the discussions title" required>
+    <link rel="stylesheet" href="css/style.css">
+</head>
 
-    <textarea name="content"
-              placeholder="Write your post..."
-              required></textarea>
+<body>
 
-    <button type="submit">Submit</button>
+<div class="page-container">
 
-</form>
+    <a href="index.php" class="back-link">
+        Return to forum
+    </a>
 
-<p><?= htmlspecialchars($error) ?></p>
+    <div class="form-card">
+
+        <h1>Create New Discussion</h1>
+
+        <form method="POST">
+
+            <input
+                type="text"
+                name="title"
+                placeholder="Enter the discussion title"
+                required
+            >
+
+            <textarea
+                name="content"
+                placeholder="Write your post..."
+                required
+            ></textarea>
+
+            <button type="submit">
+                Submit
+            </button>
+
+        </form>
+
+        <?php if ($error !== ""): ?>
+
+            <p class="error-message">
+                <?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>
+            </p>
+
+        <?php endif; ?>
+
+    </div>
+
+</div>
+
+</body>
+</html>
