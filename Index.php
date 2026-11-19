@@ -37,8 +37,8 @@ $topics = $stmt->fetchAll();
 <?php if (isset($_SESSION["user_id"])): ?>
 
     <p>
-        Inloggad som:
-        <?= htmlspecialchars($_SESSION["username"]) ?>
+        Logged in as:
+        <?= htmlspecialchars($_SESSION["username"], ENT_QUOTES, 'UTF-8') ?>
     </p>
 
     <a href="new_topic.php">Create a new post</a>
@@ -65,13 +65,13 @@ $topics = $stmt->fetchAll();
 
         <h3 class="topic-title">
             <a href="topic.php?id=<?= (int)$topic["id"] ?>">
-                <?= htmlspecialchars($topic["title"]) ?>
+                <?= htmlspecialchars($topic["title"], ENT_QUOTES, 'UTF-8') ?>
             </a>
         </h3>
 
         <p class="topic-info">
             Started by:
-            <?= htmlspecialchars($topic["username"]) ?>
+            <?= htmlspecialchars($topic["username"], ENT_QUOTES, 'UTF-8') ?>
         </p>
 
         <p class="topic-info">
@@ -83,7 +83,7 @@ $topics = $stmt->fetchAll();
         </p>
 
         <p class="topic-date">
-            <?= htmlspecialchars($topic["created_at"]) ?>
+            <?= htmlspecialchars($topic["created_at"], ENT_QUOTES, 'UTF-8') ?>
         </p>
 
     </div>

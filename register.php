@@ -10,8 +10,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $username = trim($_POST["username"] ?? "");
     $password = $_POST["password"] ?? "";
 
-    if (mb_strlen($username) < 3 || mb_strlen($username) > 50) {
-        $error = "Username needs to be between 3 and 50 characters.";
+    if (!preg_match('/\A[\p{L}\p{N}_-]{3,20}\z/u',$username)) {
+        $error = "Username needs to be between 3 and 20 characters and can only contain letters, numbers, underscores or hyphens.";
 
     } elseif (strlen($password) < 8) {
         $error = "Password needs to be at least 8 characters.";
@@ -41,7 +41,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <h1>Register Your Account</h1>
 
 <form method="POST">
-    <input type="text" name="username"
+    <input type="text" 
+        name="username"
+        minlength="3"
+        maxlength="20"
+        pattern="[A-Za-z0-9_åäöÅÄÖ-]+"
+        title="3-20 characters. Letters, numbers, underscores and hyphens only."
            placeholder="Username" required>
 
     <input type="password" name="password"

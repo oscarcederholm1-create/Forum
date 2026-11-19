@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $content = trim($_POST["content"] ?? "");
 
-    if ($content !== "") {
+    if (mb_strlen($content) >= 2 && mb_strlen($content) <= 50) {
 
         $stmt = $pdo->prepare("
             INSERT INTO posts (topic_id, user_id, content)
@@ -115,8 +115,8 @@ $posts = $stmt->fetchAll();
 <h1><?= htmlspecialchars($topic["title"]) ?></h1>
 
 <p>
-    Started by:
-    <?= htmlspecialchars($topic["username"]) ?>
+    Posted by:
+    <?= htmlspecialchars($post["username"], ENT_QUOTES, 'UTF-8') ?>
 </p>
 
 
@@ -128,16 +128,16 @@ $posts = $stmt->fetchAll();
 
         <p>
             <strong>
-                <?= htmlspecialchars($post["username"] ?? "Former user") ?>
+                <?= htmlspecialchars($post["username"] ?? "Former user", ENT_QUOTES, 'UTF-8') ?>
             </strong>
         </p>
 
         <p>
-            <?= nl2br(htmlspecialchars($post["content"])) ?>
+            <?= nl2br(htmlspecialchars($post["content"], ENT_QUOTES, 'UTF-8')) ?>
         </p>
 
         <small>
-            <?= htmlspecialchars($post["created_at"]) ?>
+            <?= htmlspecialchars($post["created_at"], ENT_QUOTES, 'UTF-8') ?>
         </small>
 
         <p>
@@ -170,6 +170,8 @@ $posts = $stmt->fetchAll();
 
         <textarea name="content"
                   placeholder="Send your answer..."
+                  minlength="2"
+                  maxlength="50"
                   required></textarea>
 
         <button type="submit">Send reply</button>
